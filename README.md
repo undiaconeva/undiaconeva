@@ -1,6 +1,6 @@
 # Un día con Eva
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24529836.svg)](https://doi.org/10.5281/zenodo.24529836)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24529835.svg)](https://doi.org/10.5281/zenodo.24529835)
 
 *Un día con Eva* (*A Day with Eva*) es un juego educativo de tipo *point and click*
 sobre la evaluación en la vida cotidiana. El jugador acompaña a Eva, una estudiante
@@ -71,7 +71,10 @@ completos en [`LICENSE.md`](LICENSE.md).
 
 ## Cómo citar
 
-Gómez Ruiz, M. Á., Ibarra Sáiz, M. S., Rodríguez Gómez, G., Serrano Laguna, Á. y Nieto Rojas, D. (2014). *Un día con Eva* [Juego educativo]. Zenodo. https://doi.org/10.5281/zenodo.24529836
+Gómez Ruiz, M. Á., Ibarra-Sáiz, M. S., Rodríguez-Gómez, G., Serrano Laguna, Á. y Nieto Rojas, D. (2014). *Un día con Eva* [Juego educativo]. Zenodo. https://doi.org/10.5281/zenodo.24529835
+
+Este DOI apunta siempre a la última versión archivada en Zenodo. La versión 1.0 tiene su
+propio DOI: [10.5281/zenodo.24529836](https://doi.org/10.5281/zenodo.24529836).
 
 Los datos para citarlo también están en [`CITATION.cff`](CITATION.cff) (botón «Cite this
 repository» de GitHub).

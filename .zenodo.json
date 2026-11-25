@@ -41,7 +41,7 @@
   "notes": "Juego realizado en el marco del Proyecto DevalSimWeb (ALFA III (2011)-10), con la financiación de la Unión Europea, y del Proyecto DevalS (EDU2012-31804), con la financiación del Ministerio de Economía y Competitividad.",
   "related_identifiers": [
     {
-      "identifier": "https://undiaconeva.github.io/undiaconeva/",
+      "identifier": "https://eva.evalfor.net/",
       "relation": "isSupplementedBy",
       "resource_type": "software"
     }

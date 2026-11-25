@@ -3,14 +3,14 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24529835.svg)](https://doi.org/10.5281/zenodo.24529835)
 
 *Un día con Eva* (*A Day with Eva*) es un juego educativo de tipo *point and click*
-sobre la evaluación en la vida cotidiana. El jugador acompaña a Eva, una estudiante
-universitaria, a lo largo de un día en el que tiene que establecer criterios, comparar,
-valorar y tomar decisiones: elegir transporte, evaluar los trabajos de sus compañeros,
+sobre la evaluación en la vida cotidiana. La persona que juega acompaña a Eva, una
+estudiante universitaria, a lo largo de un día en el que tiene que establecer criterios,
+comparar, valorar y tomar decisiones: elegir transporte, evaluar trabajos de su clase,
 escoger menú y planear la noche. Al final, un informe resume cómo lo ha hecho.
 
 Objetivos del juego:
 
-- Propiciar en los estudiantes la reflexión argumentada sobre la relevancia de la
+- Propiciar en el estudiantado la reflexión argumentada sobre la relevancia de la
   evaluación en la realidad cotidiana.
 - Trabajar y explicitar los componentes fundamentales de la evaluación: establecimiento
   de criterios, comparación, valoración y toma de decisiones.
@@ -18,7 +18,7 @@ Objetivos del juego:
 ## Jugar
 
 - **En el navegador** (ordenador, tableta o móvil, sin instalar nada):
-  <https://eva.evalfor.net/> *(dirección en preparación)*
+  <https://eva.evalfor.net/> (página del juego) · <https://eva.evalfor.net/jugar/> (directamente al juego)
 - **Versión original para Java**: [`java/undiaconeva.jar`](java/undiaconeva.jar)
   (2014). Se abre con `java -jar undiaconeva.jar`; necesita Java instalado.
 

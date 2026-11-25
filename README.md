@@ -34,11 +34,13 @@ partidas y el informe final funcionan igual que en el original.
 
 ## Créditos
 
-- **Idea, guion y web**: Miguel Ángel Gómez Ruiz (Universidad de Cádiz)
+Según la pantalla de créditos del propio juego:
+
 - **Dirección**: María Soledad Ibarra Sáiz y Gregorio Rodríguez Gómez (Universidad de Cádiz)
+- **Idea, guion y web**: Miguel Ángel Gómez Ruiz (Universidad de Cádiz)
 - **Ilustración y animación**: David Nieto Rojas ([deividart.com](http://www.deividart.com))
-- **Programación (versión original)**: Ángel Serrano Laguna (Grupo de Investigación e-UCM)
-- **Música**: «High Speed Chase», de DJ Reset, y «Love», de The Flame ([Jamendo](https://www.jamendo.com))
+- **Programación**: Ángel Serrano Laguna (Grupo de Investigación e-UCM)
+- **Reconocimientos (música)**: «High Speed Chase», de DJ Reset, y «Love», de The Flame ([Jamendo](https://www.jamendo.com))
 - Desarrollado con [eAdventure](https://e-adventure.e-ucm.es/) (e-UCM, Universidad Complutense de Madrid)
 
 Juego realizado en el marco del Proyecto DevalSimWeb (ALFA III (2011)-10), con la
@@ -47,9 +49,15 @@ financiación del Ministerio de Economía y Competitividad.
 
 ## Licencia
 
-Pendiente de confirmar. La versión original se publicó bajo una licencia
-[Creative Commons Reconocimiento-CompartirIgual 3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.es).
+El juego se distribuye bajo la licencia
+[Creative Commons Reconocimiento-CompartirIgual 3.0 Unported](https://creativecommons.org/licenses/by-sa/3.0/deed.es),
+como figura en sus créditos. El código del motor de la versión web (`jugar/js/`) es una
+adaptación del motor eAdventure y se distribuye bajo GNU LGPL 3.0. Detalles y textos
+completos en [`LICENSE.md`](LICENSE.md).
 
 ## Cómo citar
 
-El DOI de Zenodo se añadirá aquí cuando el juego quede archivado.
+Gómez Ruiz, M. Á., Ibarra Sáiz, M. S., Rodríguez Gómez, G., Serrano Laguna, Á. y Nieto Rojas, D. (2014). *Un día con Eva* [Juego educativo]. Zenodo. https://doi.org/… *(el DOI se añadirá cuando el juego quede archivado en Zenodo)*
+
+Los datos para citarlo también están en [`CITATION.cff`](CITATION.cff) (botón «Cite this
+repository» de GitHub).

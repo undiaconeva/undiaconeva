@@ -1,0 +1,49 @@
+{
+  "title": "Un día con Eva",
+  "upload_type": "software",
+  "description": "<p><em>Un día con Eva</em> (<em>A Day with Eva</em>) es un juego educativo de tipo <em>point and click</em> sobre la evaluación en la vida cotidiana. El jugador acompaña a Eva, una estudiante universitaria, a lo largo de un día en el que tiene que establecer criterios, comparar, valorar y tomar decisiones. Al final, un informe resume cómo lo ha hecho.</p><p>Objetivos: propiciar en los estudiantes la reflexión argumentada sobre la relevancia de la evaluación en la realidad cotidiana, y trabajar y explicitar los componentes fundamentales de la evaluación: establecimiento de criterios, comparación, valoración y toma de decisiones.</p><p>Este registro contiene la versión original para Java (2014), tal como se distribuyó, y una adaptación del juego original para navegador (2026), que usa los mismos datos, imágenes, vídeos y sonidos. Jugar en el navegador: <a href=\"https://undiaconeva.github.io/undiaconeva/\">https://undiaconeva.github.io/undiaconeva/</a></p><p><strong>Créditos</strong> (según la pantalla de créditos del juego)</p><ul><li><strong>Dirección</strong>: María Soledad Ibarra Sáiz y Gregorio Rodríguez Gómez (Universidad de Cádiz)</li><li><strong>Idea, guion y web</strong>: Miguel Ángel Gómez Ruiz (Universidad de Cádiz)</li><li><strong>Ilustración y animación</strong>: David Nieto Rojas (www.deividart.com)</li><li><strong>Programación</strong>: Ángel Serrano Laguna (Grupo de Investigación e-UCM)</li></ul><p>Juego realizado en el marco del Proyecto DevalSimWeb (ALFA III (2011)-10), con la financiación de la Unión Europea, y del Proyecto DevalS (EDU2012-31804), con la financiación del Ministerio de Economía y Competitividad.</p><p><strong>Reconocimientos.</strong> Música: «High Speed Chase», de DJ Reset, y «Love», de The Flame (www.jamendo.com). Desarrollado con eAdventure.</p><p><strong>Licencia.</strong> El juego se distribuye bajo la licencia Creative Commons Reconocimiento-CompartirIgual 3.0 Unported, como figura en sus créditos. El código del motor de la versión web (<code>jugar/js/</code>), adaptación del motor eAdventure, se distribuye bajo GNU LGPL 3.0.</p>",
+  "creators": [
+    {
+      "name": "Gómez Ruiz, Miguel Ángel",
+      "affiliation": "Universidad de Cádiz"
+    },
+    {
+      "name": "Ibarra Sáiz, María Soledad",
+      "affiliation": "Universidad de Cádiz"
+    },
+    {
+      "name": "Rodríguez Gómez, Gregorio",
+      "affiliation": "Universidad de Cádiz"
+    },
+    {
+      "name": "Serrano Laguna, Ángel",
+      "affiliation": "Grupo de Investigación e-UCM, Universidad Complutense de Madrid"
+    },
+    {
+      "name": "Nieto Rojas, David"
+    }
+  ],
+  "license": "cc-by-sa-3.0",
+  "access_right": "open",
+  "keywords": [
+    "evaluación",
+    "evaluación del aprendizaje",
+    "juego educativo",
+    "juego serio",
+    "serious game",
+    "point and click",
+    "aventura gráfica",
+    "educación superior",
+    "assessment",
+    "eAdventure"
+  ],
+  "language": "spa",
+  "notes": "Juego realizado en el marco del Proyecto DevalSimWeb (ALFA III (2011)-10), con la financiación de la Unión Europea, y del Proyecto DevalS (EDU2012-31804), con la financiación del Ministerio de Economía y Competitividad.",
+  "related_identifiers": [
+    {
+      "identifier": "https://undiaconeva.github.io/undiaconeva/",
+      "relation": "isSupplementedBy",
+      "resource_type": "software"
+    }
+  ]
+}

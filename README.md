@@ -28,7 +28,7 @@ Objetivos del juego:
 |---|---|
 | `jugar/` | Versión web: el juego original funcionando en el navegador (HTML y JavaScript) |
 | `java/undiaconeva.jar` | Versión original para Java, tal como se distribuyó en 2014 |
-| `index.html` | Página de entrada (provisionalmente, lleva directamente al juego) |
+| `index.html`, `img/`, `fonts/` | Página de presentación del juego (tipografía Baloo 2, licencia SIL OFL 1.1 en `fonts/`) |
 
 La versión web reimplementa en JavaScript el motor eAdventure con el que se hizo el
 juego y usa los mismos datos, imágenes, vídeos y sonidos que la versión Java. Las

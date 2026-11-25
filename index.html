@@ -2,12 +2,313 @@
 <html lang="es">
 <head>
 <meta charset="utf-8">
-<title>Un día con Eva</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- Provisional: lleva directamente al juego hasta que esté la página de presentación -->
-<script>location.replace('jugar/' + location.search + location.hash);</script>
-<meta http-equiv="refresh" content="0; url=jugar/">
-<link rel="canonical" href="jugar/">
+<title>Un día con Eva · Juego educativo sobre evaluación</title>
+<meta name="description" content="Un día con Eva: juego educativo de tipo point and click sobre la evaluación en la vida cotidiana. Juega gratis en el navegador, en el ordenador, la tableta o el móvil.">
+<link rel="icon" href="jugar/icon.png">
+<meta property="og:title" content="Un día con Eva">
+<meta property="og:description" content="Juego educativo sobre la evaluación en la vida cotidiana. Gratis, en el navegador.">
+<meta property="og:image" content="https://eva.evalfor.net/img/portada.webp">
+<link rel="preload" href="fonts/baloo-2-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>
+/* VOICE: friendly and clear, like the game; teachers and students are the readers
+   IDEA: the game's own world: the warm peach of its title screen, Eva's violet, the orange clock bar
+   PICTURE: the game itself, a real screen in a device frame, with Eva standing beside the Play button
+   COLOUR and TYPE: peach ground, violet ink, orange accent; Baloo 2 (rounded, like the logo) + system sans
+   LAYOUT: hero; what it is; six scenes as a strip of screens; videos; how to play; in class; credits; cite */
+@font-face{font-family:"Baloo 2";font-weight:700;font-display:swap;src:url(fonts/baloo-2-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Baloo 2";font-weight:800;font-display:swap;src:url(fonts/baloo-2-latin-800-normal.woff2) format("woff2")}
+:root{color-scheme:light;--peach:#fbeee6;--peach2:#f3e1d6;--violet:#5a2d82;--violet-d:#3d1d5a;--orange:#f39200;--blue:#1f6fc5;--ink:#24182c;--muted:#6a5a70;--card:#fff;--rule:#ead9cf}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:#fff;color:var(--ink);font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow-x:clip}
+h1,h2,h3{font-family:"Baloo 2",system-ui,sans-serif;line-height:1.08;text-wrap:balance;color:var(--violet-d);margin:0}
+h2{font-size:clamp(30px,4vw,42px);font-weight:800;margin-bottom:14px}
+h3{font-size:22px;font-weight:700;margin-bottom:6px}
+p{margin:0 0 14px}
+a{color:var(--blue)}a:hover{color:var(--violet)}
+a:focus-visible,button:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 max(4vw,16px)}
+.band{padding:clamp(44px,6vw,84px) 0}
+.alt{background:var(--peach)}
+/* top bar */
+.top{position:sticky;top:0;z-index:5;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule)}
+.top .wrap{display:flex;align-items:center;gap:20px;min-height:60px}
+.brand{font:800 21px "Baloo 2",sans-serif;color:var(--violet-d);text-decoration:none;white-space:nowrap}
+.nav{display:flex;gap:4px 18px;overflow-x:auto;flex:1;font-size:15px;font-weight:600;scrollbar-width:none}
+.nav a{color:var(--ink);text-decoration:none;white-space:nowrap;padding:10px 0}
+.nav a:hover{color:var(--violet)}
+.top .play-sm{flex:none}
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:10px 22px;border-radius:999px;font:700 17px system-ui,sans-serif;text-decoration:none;border:2px solid transparent;cursor:pointer}
+.btn-play{background:var(--orange);color:#24182c;box-shadow:0 4px 0 #c47500}
+.btn-play:hover{background:#ffa31a;color:#24182c}
+.btn-ghost{border-color:var(--violet);color:var(--violet);background:#fff}
+.btn-ghost:hover{background:var(--violet);color:#fff}
+.btn-sm{min-height:40px;padding:6px 16px;font-size:15px;box-shadow:0 3px 0 #c47500}
+/* hero */
+.hero{background:linear-gradient(180deg,var(--peach) 0%,var(--peach2) 100%);padding:clamp(28px,4vw,56px) 0 clamp(40px,5vw,70px)}
+.hero .wrap{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:clamp(24px,4vw,56px);align-items:center}
+.hero .logo{width:min(440px,100%);height:auto;display:block;margin:0 0 6px -8px}
+.hero h1{font-size:clamp(26px,3.2vw,36px);font-weight:800;margin:4px 0 12px}
+.lead{font-size:clamp(17px,1.6vw,19px);max-width:46ch}
+.ctas{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0 18px}
+.facts{display:flex;flex-wrap:wrap;gap:8px;padding:0;margin:0;list-style:none;font-size:15px}
+.facts li{background:rgba(255,255,255,.75);border-radius:999px;padding:4px 12px}
+.stage{position:relative}
+.screen{background:#2a1c33;border-radius:18px;padding:10px;box-shadow:0 24px 50px rgba(61,29,90,.28)}
+.screen img{display:block;width:100%;height:auto;border-radius:10px;aspect-ratio:4/3}
+.eva{position:absolute;left:-58px;bottom:-26px;width:96px;height:auto;filter:drop-shadow(0 10px 10px rgba(0,0,0,.18))}
+/* what */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,4vw,56px)}
+.goals{padding-left:1.1em;margin:0 0 14px}.goals li{margin-bottom:8px}
+.box{background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:20px 22px;margin-bottom:16px}
+.box dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px 16px}
+.box dt{font-weight:700}.box dd{margin:0}
+/* scenes */
+.scenes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:22px}
+.scene{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 0 var(--rule),0 10px 24px rgba(61,29,90,.08)}
+.scene img{display:block;width:100%;height:auto;aspect-ratio:4/3}
+.scene div{padding:14px 18px 18px}
+.scene .n{font:800 15px "Baloo 2",sans-serif;color:var(--orange)}
+.scene p{margin:0;font-size:16px}
+/* videos */
+.videos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:20px}
+.video{margin:0}
+.yt{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;border-radius:14px;overflow:hidden;background:#2a1c33 center/cover no-repeat;cursor:pointer}
+.yt::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(36,24,44,.55),rgba(36,24,44,.05))}
+.yt span{position:absolute;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;background:var(--orange);box-shadow:0 6px 0 #c47500}
+.yt span::before{content:"";position:absolute;left:30px;top:22px;border-style:solid;border-width:16px 0 16px 26px;border-color:transparent transparent transparent #24182c}
+.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video figcaption{margin-top:8px;font-weight:600}
+.small{font-size:14px;color:var(--muted)}
+/* how */
+.how{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;margin-top:20px}
+.how .box{margin:0}
+.how ol{margin:0;padding-left:1.2em}.how li{margin-bottom:8px}
+.badge{display:inline-block;font:700 13px system-ui,sans-serif;background:var(--violet);color:#fff;border-radius:6px;padding:2px 8px;margin-bottom:8px}
+.badge.or{background:var(--orange);color:#24182c}
+/* credits */
+.credits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 40px;margin:18px 0 22px}
+.credits div{padding:12px 0;border-bottom:1px solid var(--rule)}
+.credits b{display:block;font-size:13px;letter-spacing:.02em;color:var(--violet)}
+.fund{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.fund p{background:var(--peach);border-radius:12px;padding:14px 16px;margin:0;font-size:16px}
+/* cite */
+.cite{background:#fff;border:2px solid var(--violet);border-radius:16px;padding:18px 20px;margin:16px 0}
+.cite p{margin:0 0 12px;overflow-wrap:anywhere}
+.copy{font:700 15px system-ui,sans-serif;min-height:40px;padding:6px 16px;border-radius:999px;border:2px solid var(--violet);background:#fff;color:var(--violet);cursor:pointer}
+.copy.ok{background:var(--violet);color:#fff}
+.links{display:flex;flex-wrap:wrap;gap:10px 22px;padding:0;margin:0;list-style:none;font-weight:600}
+footer{background:var(--violet-d);color:#f1e7f7;padding:34px 0;font-size:15px}
+footer a{color:#fff}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px 28px;justify-content:space-between}
+@media(max-width:900px){.hero .wrap,.two,.how{grid-template-columns:minmax(0,1fr)}.eva{display:none}.scenes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.nav{display:none}.top .wrap{justify-content:space-between}.scenes,.videos,.credits,.fund{grid-template-columns:minmax(0,1fr)}.box dl{grid-template-columns:minmax(0,1fr)}.box dd{margin-bottom:8px}}
+</style>
 </head>
-<body><p><a href="jugar/">Jugar a «Un día con Eva»</a></p></body>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#inicio">Un día con Eva</a>
+    <nav class="nav" aria-label="Secciones">
+      <a href="#que-es">Qué es</a>
+      <a href="#escenas">Escenas</a>
+      <a href="#videos">Vídeos</a>
+      <a href="#como-jugar">Cómo jugar</a>
+      <a href="#creditos">Créditos</a>
+      <a href="#citar">Citar</a>
+    </nav>
+    <a class="btn btn-play btn-sm play-sm" href="jugar/">Jugar</a>
+  </div>
+</header>
+
+<main id="inicio">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <img class="logo" src="img/logo-eva.webp" width="560" height="192" alt="Un día con Eva">
+      <h1>Un día cualquiera, un montón de decisiones</h1>
+      <p class="lead">Un juego educativo de tipo <em>point and click</em> sobre la evaluación en la vida cotidiana. Acompaña a Eva, estudiante universitaria, durante un día de su vida y decide en cada escena con criterio.</p>
+      <div class="ctas">
+        <a class="btn btn-play" href="jugar/">Jugar ahora</a>
+        <a class="btn btn-ghost" href="#como-jugar">Otras formas de jugar</a>
+      </div>
+      <ul class="facts" aria-label="En resumen">
+        <li>25–30 minutos</li><li>Español</li><li>Ordenador, tableta o móvil</li><li>Gratis y sin registro</li>
+      </ul>
+    </div>
+    <div class="stage">
+      <div class="screen"><img src="img/portada.webp" width="1200" height="900" alt="Escena del campus universitario del juego: Eva llega a la facultad, donde la espera gente de su clase."></div>
+      <img class="eva" src="img/eva.webp" width="128" height="500" alt="">
+    </div>
+  </div>
+</section>
+
+<section class="band" id="que-es">
+  <div class="wrap two">
+    <div>
+      <h2>Qué es</h2>
+      <p><em>Un día con Eva</em> es un juego educativo desarrollado en el marco del proyecto Alfa DevalSimWeb, financiado por la Unión Europea. La persona que juega vive con Eva un día en el que tiene que establecer criterios, comparar, valorar y tomar decisiones. Al final, un informe resume cómo lo ha hecho.</p>
+      <p>Sirve en contextos formales y no formales, para jugar de forma individual o para comentarlo después en grupo: el informe final da pie a hablar de los criterios que ha usado cada persona.</p>
+      <h3>Objetivos</h3>
+      <ul class="goals">
+        <li>Propiciar en el estudiantado la reflexión argumentada sobre la relevancia de la evaluación en la realidad cotidiana.</li>
+        <li>Trabajar y explicitar los componentes fundamentales de la evaluación: establecimiento de criterios, comparación, valoración y toma de decisiones.</li>
+      </ul>
+    </div>
+    <div>
+      <div class="box">
+        <dl>
+          <dt>Para quién</dt><dd>Estudiantado universitario que se acerca a la evaluación, y también otros niveles educativos.</dd>
+          <dt>Duración</dt><dd>Entre 25 y 30 minutos.</dd>
+          <dt>Idioma</dt><dd>Español.</dd>
+        </dl>
+      </div>
+      <h3>Competencias que se trabajan</h3>
+      <ul class="goals">
+        <li>Dar respuesta a situaciones cotidianas mediante el pensamiento crítico y el juicio analítico.</li>
+        <li>Tomar decisiones consecuentes con los criterios de evaluación.</li>
+        <li>Resolver situaciones problemáticas mediante la valoración de distintas posibilidades.</li>
+        <li>Establecer criterios y argumentos reflexionados y fundamentados.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="band alt" id="escenas">
+  <div class="wrap">
+    <h2>Seis escenas, un día</h2>
+    <p>Eva ha tomado muchas decisiones a lo largo de su vida. El juego se sitúa en un día cualquiera y lo recorre en seis escenarios.</p>
+    <div class="scenes">
+      <article class="scene"><img src="img/habitacion.webp" width="800" height="600" loading="lazy" alt="La habitación de Eva"><div><span class="n">1</span><h3>La habitación de Eva</h3><p>Desayunar, preparar lo necesario y elegir cómo ir a la universidad: a pie, en bicicleta, en tren, en autobús o en coche.</p></div></article>
+      <article class="scene"><img src="img/campus.webp" width="800" height="600" loading="lazy" alt="El campus universitario"><div><span class="n">2</span><h3>El campus</h3><p>Eva se encuentra con gente de su clase y decide si hace un trabajo en solitario o en grupo.</p></div></article>
+      <article class="scene"><img src="img/pasillo.webp" width="800" height="600" loading="lazy" alt="El pasillo de la facultad"><div><span class="n">3</span><h3>El pasillo de la facultad</h3><p>El cruce de caminos hacia el resto de escenarios, con conversaciones y opciones que solo aparecen aquí.</p></div></article>
+      <article class="scene"><img src="img/sala-estudio.webp" width="800" height="600" loading="lazy" alt="La sala de estudio"><div><span class="n">4</span><h3>La sala de estudio</h3><p>Eva evalúa con una rúbrica los trabajos de otras personas de su clase, sola o en grupo según lo que decidió antes.</p></div></article>
+      <article class="scene"><img src="img/comedor.webp" width="800" height="600" loading="lazy" alt="El comedor"><div><span class="n">5</span><h3>El comedor</h3><p>A mediodía toca reponer energías y elegir un menú de acuerdo con sus preferencias.</p></div></article>
+      <article class="scene"><img src="img/aula.webp" width="800" height="600" loading="lazy" alt="El aula"><div><span class="n">6</span><h3>El aula</h3><p>Antes de clase, Eva habla con su amiga y decide si salir esa noche o quedarse estudiando.</p></div></article>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="videos">
+  <div class="wrap">
+    <h2>Míralo antes de jugar</h2>
+    <div class="videos">
+      <figure class="video">
+        <button class="yt" data-id="RJlnNsHZuKY" style="background-image:url(img/logo.webp)" aria-label="Reproducir el vídeo de presentación"><span></span></button>
+        <figcaption>Presentación</figcaption>
+      </figure>
+      <figure class="video">
+        <button class="yt" data-id="UKi6G-C9lus" style="background-image:url(img/transporte.webp)" aria-label="Reproducir el tráiler"><span></span></button>
+        <figcaption>Tráiler</figcaption>
+      </figure>
+    </div>
+    <p class="small">Los vídeos están en el canal de YouTube del Grupo de Investigación EVALfor y solo se cargan desde YouTube si pulsas en ellos.</p>
+  </div>
+</section>
+
+<section class="band alt" id="como-jugar">
+  <div class="wrap">
+    <h2>Cómo jugar</h2>
+    <div class="how">
+      <div class="box">
+        <span class="badge or">Recomendado</span>
+        <h3>En el navegador</h3>
+        <p>Sin instalar nada, en el ordenador, la tableta o el móvil.</p>
+        <ol>
+          <li>Pulsa <strong>Jugar ahora</strong> y después <strong>Jugar</strong>.</li>
+          <li>Haz clic, o toca la pantalla, sobre lo que quieras usar o con quien quieras hablar.</li>
+          <li>El botón de la esquina superior derecha pone el juego a pantalla completa.</li>
+        </ol>
+        <p style="margin:14px 0 0"><a class="btn btn-play btn-sm" href="jugar/">Jugar ahora</a></p>
+      </div>
+      <div class="box">
+        <span class="badge">Versión original</span>
+        <h3>Para Java, sin conexión</h3>
+        <p>La versión de 2014, tal como se publicó, se conserva en Zenodo.</p>
+        <ol>
+          <li>Instala Java 8 o posterior; por ejemplo, <a href="https://adoptium.net/">Eclipse Temurin</a>, gratuito.</li>
+          <li>Descarga <a href="https://zenodo.org/records/24529836/files/undiaconeva.zip?download=1">undiaconeva.zip</a> (72 MB) y descomprímelo.</li>
+          <li>Abre <code>undiaconeva.jar</code> con doble clic.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="band" id="creditos">
+  <div class="wrap">
+    <h2>Créditos</h2>
+    <div class="credits">
+      <div><b>DIRECCIÓN</b>María Soledad Ibarra Sáiz y Gregorio Rodríguez Gómez<br><span class="small">Universidad de Cádiz</span></div>
+      <div><b>IDEA, GUIÓN · WEB</b>Miguel Ángel Gómez Ruiz<br><span class="small">Universidad de Cádiz</span></div>
+      <div><b>ILUSTRACIÓN Y ANIMACIÓN</b>David Nieto Rojas<br><span class="small">www.deividart.com</span></div>
+      <div><b>PROGRAMACIÓN</b>Ángel Serrano Laguna<br><span class="small">Grupo de Investigación e-UCM</span></div>
+    </div>
+    <div class="fund">
+      <p>Juego realizado en el marco del Proyecto DevalSimWeb, ALFA III (2011)-10, con la financiación de la Unión Europea.</p>
+      <p>Juego realizado en el marco del Proyecto DevalS, EDU2012-31804, con la financiación del Ministerio de Economía y Competitividad.</p>
+    </div>
+    <p style="margin-top:18px"><strong>Reconocimientos.</strong> Música: «High Speed Chase», de DJ Reset, y «Love», de The Flame (<a href="https://www.jamendo.com">jamendo.com</a>). Desarrollado con eAdventure (e-UCM, Universidad Complutense de Madrid).</p>
+  </div>
+</section>
+
+<section class="band alt" id="citar">
+  <div class="wrap two">
+    <div>
+      <h2>Licencia y cita</h2>
+      <p>El juego se distribuye bajo la licencia <a href="https://creativecommons.org/licenses/by-sa/3.0/deed.es">Creative Commons Reconocimiento-CompartirIgual 3.0 Unported</a>. El código de la versión para navegador, adaptación del motor eAdventure, se distribuye bajo GNU LGPL 3.0.</p>
+      <p>La versión original y la versión para navegador están archivadas en Zenodo, con un DOI permanente.</p>
+      <ul class="links">
+        <li><a href="https://doi.org/10.5281/zenodo.24529835">Registro en Zenodo</a></li>
+        <li><a href="https://github.com/undiaconeva/undiaconeva">Código en GitHub</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="cite">
+        <p id="cita">Gómez Ruiz, M. Á., Ibarra-Sáiz, M. S., Rodríguez-Gómez, G., Serrano Laguna, Á. y Nieto Rojas, D. (2014). <em>Un día con Eva</em> [Juego educativo]. Zenodo. https://doi.org/10.5281/zenodo.24529835</p>
+        <button class="copy" type="button" data-copy="cita">Copiar la cita</button>
+      </div>
+      <p class="small" lang="en"><strong>In English.</strong> <em>A Day with Eva</em> is an educational point-and-click game, in Spanish, about assessment in everyday life. Play it for free in your browser.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Un día con Eva · eva.evalfor.net</span>
+    <span>Esta web no usa cookies ni seguimiento.</span>
+  </div>
+</footer>
+
+<script>
+{
+  for (const b of document.querySelectorAll('.yt')) {
+    b.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + b.dataset.id + '?autoplay=1&rel=0';
+      f.title = b.getAttribute('aria-label').replace('Reproducir ', '');
+      f.allow = 'autoplay; encrypted-media; fullscreen; picture-in-picture';
+      f.allowFullscreen = true;
+      const d = document.createElement('div');
+      d.className = 'yt';
+      d.appendChild(f);
+      b.replaceWith(d);
+    }, { once: true });
+  }
+  for (const b of document.querySelectorAll('[data-copy]')) {
+    b.addEventListener('click', async () => {
+      const t = document.getElementById(b.dataset.copy).innerText;
+      try { await navigator.clipboard.writeText(t); b.classList.add('ok'); b.textContent = 'Copiada'; }
+      catch (e) { b.textContent = 'Selecciónala y cópiala'; }
+      setTimeout(() => { b.classList.remove('ok'); b.textContent = 'Copiar la cita'; }, 1800);
+    });
+  }
+}
+</script>
+</body>
 </html>

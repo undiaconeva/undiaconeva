@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Un día con Eva</title>
+<link rel="icon" href="icon.png">
+<meta name="description" content="Un día con Eva: juego educativo sobre la evaluación entre iguales. Versión para navegador.">
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #101114; color: #e9e6df;
+    font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  body { display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #frame { position: relative; width: min(100vw, calc(100vh * 4 / 3)); aspect-ratio: 4 / 3; background: #000;
+    box-shadow: 0 0 0 1px #2a2c31, 0 20px 60px rgba(0,0,0,.5); }
+  #game { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: none; touch-action: none; }
+  .ead-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 5; }
+  #start { pointer-events: none; }
+  #start button { pointer-events: auto; position: absolute; left: 50%; top: 38.7%; transform: translate(-50%, -50%);
+    font-size: clamp(16px, 2.6vw, 22px); padding: .8em 2.4em; }
+  .btn { font: 600 18px/1 system-ui, sans-serif; color: #fff; background: #2f6f4f; border: 0; border-radius: 999px;
+    padding: 14px 34px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,.35); }
+  .btn:hover { background: #377f5b; }
+  .btn:focus-visible { outline: 3px solid #9ad0b3; outline-offset: 3px; }
+  .btn.secondary { background: #3a3d44; }
+  .btn.secondary:hover { background: #474b53; }
+  .hidden { display: none !important; }
+  #toolbar { position: fixed; top: 8px; right: 8px; display: flex; gap: 6px; z-index: 10; opacity: .35; transition: opacity .2s; }
+  #toolbar:hover, #toolbar:focus-within { opacity: 1; }
+  #toolbar button, #toolbar a { display: grid; place-items: center; width: 34px; height: 34px; padding: 0; color: #e9e6df;
+    background: rgba(30,32,36,.85); border: 1px solid #3a3d44; border-radius: 8px; cursor: pointer; text-decoration: none; }
+  #toolbar svg { width: 18px; height: 18px; }
+  .panel { background: #f7f5f0; color: #1d1f23; border-radius: 10px; width: min(560px, 92vw); max-height: 86vh; max-height: 86dvh;
+    overflow: auto; padding: 22px 24px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+  .panel h2 { margin: 0 0 12px; font-size: 19px; }
+  .panel p { margin: 0 0 14px; }
+  .panel table { width: 100%; border-collapse: collapse; margin: 6px 0 18px; font-size: 14px; }
+  .panel th, .panel td { text-align: left; padding: 7px 8px; border-bottom: 1px solid #ddd8cc; vertical-align: top; }
+  .panel th { font-weight: 600; color: #555; }
+  .panel .actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;
+    position: sticky; bottom: -22px; margin: 0 -24px -22px; padding: 12px 24px 22px; background: #f7f5f0; }
+  .panel .btn { font-size: 15px; padding: 10px 20px; }
+  .ead-modal { position: fixed; background: rgba(0,0,0,.55); cursor: default; z-index: 20; }
+  .ead-video { position: absolute; inset: 0; z-index: 4; background: #000; }
+  .ead-video video { width: 100%; height: 100%; display: block; }
+  .ead-skip { position: absolute; right: 12px; bottom: 12px; font: 13px/1 system-ui, sans-serif; color: #fff;
+    background: rgba(0,0,0,.55); border: 1px solid rgba(255,255,255,.35); border-radius: 6px; padding: 8px 12px; cursor: pointer; }
+  #error { color: #fff; text-align: center; padding: 20px; }
+  noscript { color: #fff; }
+</style>
+</head>
+<body>
+<div id="frame">
+  <canvas id="game" width="800" height="600" aria-label="Un día con Eva"></canvas>
+  <div id="start" class="ead-overlay hidden"><button class="btn" id="startBtn" type="button">Jugar</button></div>
+  <div id="report" class="ead-overlay ead-modal hidden" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
+    <div class="panel">
+      <h2 id="reportTitle">Informe final</h2>
+      <table><thead><tr><th>Variable</th><th>Valor</th></tr></thead><tbody id="reportRows"></tbody></table>
+      <div class="actions">
+        <button class="btn secondary" id="reportCopy" type="button">Copiar</button>
+        <button class="btn secondary" id="reportSave" type="button">Descargar informe</button>
+        <button class="btn" id="reportClose" type="button">Continuar</button>
+      </div>
+    </div>
+  </div>
+  <div id="quit" class="ead-overlay ead-modal hidden" role="dialog" aria-modal="true" aria-labelledby="quitTitle">
+    <div class="panel">
+      <h2 id="quitTitle">Has salido del juego</h2>
+      <p>Gracias por jugar a <em>Un día con Eva</em>.</p>
+      <div class="actions"><button class="btn" id="again" type="button">Volver a empezar</button></div>
+    </div>
+  </div>
+  <noscript><div class="ead-overlay">Este juego necesita JavaScript.</div></noscript>
+</div>
+<div id="toolbar">
+  <button id="fs" type="button" title="Pantalla completa" aria-label="Pantalla completa">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+  </button>
+</div>
+<script src="js/ead-core.js"></script>
+<script src="js/ead-assets.js"></script>
+<script src="js/ead-scene.js"></script>
+<script src="js/ead-effects.js"></script>
+<script src="js/ead-game.js"></script>
+<script>
+(function () {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const params = new URLSearchParams(location.search);
+  let lastReport = [];
+  const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const engine = new EAD.Engine({
+    frame: $('frame'), canvas: $('game'), base: '',
+    ui: {
+      onReport(rows) {
+        lastReport = rows;
+        $('reportRows').innerHTML = rows.map((r) => '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>').join('');
+        $('report').classList.remove('hidden');
+        $('report').querySelector('.panel').scrollTop = 0;
+        $('reportClose').focus({ preventScroll: true });
+      },
+      onQuit() { $('quit').classList.remove('hidden'); $('again').focus({ preventScroll: true }); },
+    },
+  });
+  window.engine = engine;
+  $('reportClose').onclick = () => $('report').classList.add('hidden');
+  // In the Claude artifact viewer files are offered through its downloads capability.
+  let hostDownloads = null;
+  try {
+    if (window.claude && typeof window.claude.use === 'function') {
+      window.claude.use('downloads').then((d) => { hostDownloads = d; }, () => {});
+    }
+  } catch (e) { /* not in the viewer */ }
+  $('reportSave').onclick = () => {
+    const html = '<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><title>Un día con Eva: informe final</title>' +
+      '<style>body{font:15px/1.45 system-ui,sans-serif;margin:40px auto;max-width:720px;color:#222}' +
+      'table{border-collapse:collapse;width:100%}th,td{text-align:left;padding:8px;border-bottom:1px solid #ccc}</style></head>' +
+      '<body><h1>Un día con Eva: informe final</h1><p>' + esc(new Date().toLocaleString('es-ES')) + '</p>' +
+      '<table><thead><tr><th>Variable</th><th>Valor</th></tr></thead><tbody>' +
+      lastReport.map((r) => '<tr><td>' + esc(r[0]) + '</td><td>' + esc(r[1]) + '</td></tr>').join('') +
+      '</tbody></table></body></html>';
+    const filename = 'informe-un-dia-con-eva.html';
+    if (hostDownloads) { hostDownloads.save({ filename, data: html }).catch(() => {}); return; }
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([html], { type: 'text/html' }));
+    a.download = filename;
+    document.body.appendChild(a); a.click(); a.remove();
+  };
+  $('reportCopy').onclick = () => {
+    const text = 'Un día con Eva: informe final\n' + lastReport.map((r) => r[0] + '\t' + r[1]).join('\n');
+    const done = () => { $('reportCopy').textContent = 'Copiado'; setTimeout(() => { $('reportCopy').textContent = 'Copiar'; }, 1800); };
+    try { navigator.clipboard.writeText(text).then(done, () => {}); } catch (e) { /* not available */ }
+  };
+  $('again').onclick = () => { $('quit').classList.add('hidden'); engine.restart(false); };
+  $('fs').onclick = () => {
+    const el = document.documentElement;
+    if (!document.fullscreenElement) (el.requestFullscreen || el.webkitRequestFullscreen || (() => {})).call(el);
+    else (document.exitFullscreen || document.webkitExitFullscreen).call(document);
+  };
+  document.addEventListener('fullscreenchange', () => {
+    const t = document.fullscreenElement ? 'Salir de pantalla completa' : 'Pantalla completa';
+    $('fs').title = t; $('fs').setAttribute('aria-label', t);
+  });
+  document.addEventListener('visibilitychange', () => engine.setHidden && engine.setHidden(document.hidden));
+  $('startBtn').onclick = () => {
+    $('start').classList.add('hidden');
+    engine.begin();
+  };
+  engine.boot().then(() => {
+    $('start').classList.remove('hidden');
+    $('startBtn').focus();
+    if (params.has('autostart')) $('startBtn').click();
+  }).catch((e) => {
+    console.error(e);
+    $('frame').insertAdjacentHTML('beforeend', '<div class="ead-overlay" id="error">No se ha podido cargar el juego.</div>');
+  });
+})();
+</script>
+</body>
+</html>

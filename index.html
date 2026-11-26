@@ -80,10 +80,11 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--orange);outline-off
 .videos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;margin-top:20px}
 .video{margin:0}
 .yt{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;border-radius:14px;overflow:hidden;background:#2a1c33 center/cover no-repeat;cursor:pointer}
-.yt::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(36,24,44,.55),rgba(36,24,44,.05))}
+button.yt::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(0deg,rgba(36,24,44,.55),rgba(36,24,44,.05))}
 .yt span{position:absolute;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;background:var(--orange);box-shadow:0 6px 0 #c47500}
 .yt span::before{content:"";position:absolute;left:30px;top:22px;border-style:solid;border-width:16px 0 16px 26px;border-color:transparent transparent transparent #24182c}
-.yt iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt iframe{position:absolute;inset:0;z-index:2;width:100%;height:100%;border:0}
+div.yt{cursor:auto}
 .video figcaption{margin-top:8px;font-weight:600}
 .small{font-size:14px;color:var(--muted)}
 /* how */
